@@ -119,7 +119,7 @@ BinarySearchTree<T>::~BinarySearchTree()
 template<typename T>
 T BinarySearchTree<T>::key() const
 {
-	return root->key;
+	return root_->key;
 }
 
 template<typename T>
