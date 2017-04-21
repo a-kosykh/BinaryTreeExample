@@ -1,4 +1,4 @@
-#include <testclass.h>
+#include <testclass.hpp>
 #include <catch.hpp>
 
 SCENARIO ("constructor"){
