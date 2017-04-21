@@ -3,5 +3,5 @@
 
 SCENARIO ("constructor"){
 	BinarySearchTree<int> BST;
-	REQUIRE(BST.root_() == nullptr);
+	REQUIRE(BST.root() == nullptr);
 }
