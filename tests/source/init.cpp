@@ -10,9 +10,9 @@ SCENARIO("addElement")
 {
 	BinarySearchTree<int> bst;
 	bst.add(13);
-	REQUIRE(bst.value_() == 13);
-	REQUIRE(bst.leftNode_() == nullptr);
-	REQUIRE(bst.rightNode_() == nullptr);
+	REQUIRE(bst.key() == 13);
+	REQUIRE(bst.leftNode() == nullptr);
+	REQUIRE(bst.rightNode() == nullptr);
 }
 
 SCENARIO("findElement")
@@ -40,16 +40,16 @@ SCENARIO("removeElement")
 SCENARIO("infile")
 {
 	BinarySearchTree<int> bst;
-	bst.infile("file.txt");
-	REQUIRE(bst.count_(bst.root()) == 0);
+	bst.fileIn("filein.txt");
+	REQUIRE(bst.count(bst.root()) == 0);
 }
 
 SCENARIO("count")
 {
 	BinarySearchTree<int> bst;
 	int count = 0;
-	bst.insert(13);
-	bst.insert(15);
+	bst.add(13);
+	bst.add(15);
 	count = bst.count(bst.root());
 	REQUIRE(count == 2);
 }
