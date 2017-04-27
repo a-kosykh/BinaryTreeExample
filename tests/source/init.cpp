@@ -6,20 +6,22 @@ SCENARIO ("constructor"){
 	REQUIRE(BST.root() == nullptr);
 }
 
-SCENARIO("addElement")
-{
-	BinarySearchTree<int> bst;
-	bst.add(13);
-	REQUIRE(bst.key() == 13);
-	REQUIRE(bst.leftNode() == nullptr);
-	REQUIRE(bst.rightNode() == nullptr);
-}
-
 SCENARIO("findElement")
 {
 	BinarySearchTree<int> bst;
 	bst.add(13);
 	REQUIRE(bst.isFound(13) == 1);
+	REQUIRE(bst.isFound(12) == 0);
+}
+
+SCENARIO("addElement")
+{
+	BinarySearchTree<int> bst;
+	bst.add(13);
+	bst.add(23);
+	REQUIRE(bst.key() == 13);
+	REQUIRE(bst.leftNode() == nullptr);
+	REQUIRE(bst.rightNode() != nullptr);
 }
 
 SCENARIO("infile")
@@ -28,6 +30,16 @@ SCENARIO("infile")
 	bst.fileIn("filein.txt");
 	REQUIRE(bst.count(bst.root()) == 0);
 }
+SCENARIO("removeNode")
+{
+	BinarySearchTree<int> bst;
+    bst.add(13);
+	bst.add(15);
+	bst.add(25);
+	bst.add(10);
+	bst.remove(13);
+	REQUIRE(bst.isFound(13) == 0);
+}
 
 SCENARIO("count")
 {
@@ -35,6 +47,7 @@ SCENARIO("count")
 	int count = 0;
 	bst.add(13);
 	bst.add(15);
+	bst.add(25);
 	count = bst.count(bst.root());
-	REQUIRE(count == 2);
+	REQUIRE(count == 3);
 }

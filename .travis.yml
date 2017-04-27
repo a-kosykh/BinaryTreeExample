@@ -10,8 +10,6 @@ matrix:
           sources: &sources
             - llvm-toolchain-precise
             - ubuntu-toolchain-r-test
-os:
-- osx
 script:
 - mkdir build
 - cd build

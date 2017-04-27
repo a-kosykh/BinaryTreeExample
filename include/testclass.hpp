@@ -18,13 +18,13 @@ struct Node {
 
 template <typename T>
 class BinarySearchTree {
-	Node<T>* root_;
-	void	 addNode(Node<T>* &node, const T &key);
-	Node<T>* removeNode(Node<T>* &node, const T &key);
-	Node<T>* findMin(Node<T>* node);
-	Node<T>* findNode(const T& key) const;
-	void	 deleteTree(Node<T>* node);
-	void     inorderPrint(Node<T>* node, unsigned int level);
+	Node<T>*	 root_;
+	void		 addNode(Node<T>* &node, const T &key);
+	Node<T>*	 removeNode(Node<T>* &node, const T &key);
+	Node<T>*	 findMin(Node<T>* node);
+	Node<T>*	 findNode(const T& key) const;
+	void		 deleteTree(Node<T>* node);
+	void		 inorderPrint(Node<T>* node, unsigned int level);
 
 public:
 	BinarySearchTree();
@@ -36,14 +36,15 @@ public:
 	Node<T>*     rightNode() const;
 	Node<T>*     root() const;
 
-    void         add(const T& value);
+	void         add(const T& value);
 	void         remove(const T& value);
 	bool         isFound(const T& value) const;
 	void         paintTree();
-	
-	void         fileIn(string filename);
+
+	int          fileIn(string filename);
 	void         fileOut(Node<T>* node, ostream& fileOut, unsigned int level) const;
 	void         Out(string filename) const;
+
 };
 
 template<typename T>
@@ -52,7 +53,7 @@ void BinarySearchTree<T>::addNode(Node<T>*& node, const T & key)
 	if (node) {
 		if (key < node->key)
 			addNode(node->leftNode, key);
-		else if (key > node->key)
+		else if (key >= node->key)
 			addNode(node->rightNode, key);
 		else {
 			return;
@@ -130,7 +131,7 @@ template<typename T>
 void BinarySearchTree<T>::inorderPrint(Node<T>* node, unsigned int level)
 {
 	if (!node) { return; }
-	
+
 	level++;
 	inorderPrint(node->rightNode, level);
 
@@ -202,7 +203,7 @@ void BinarySearchTree<T>::remove(const T & key)
 		return;
 	}
 	else {
-		cout << key << " is not in the tree";
+		cout << key << " is not in the tree\n";
 		return;
 	}
 }
@@ -225,11 +226,13 @@ void BinarySearchTree<T>::paintTree()
 }
 
 template<typename T>
-void BinarySearchTree<T>::fileIn(string filename)
+int BinarySearchTree<T>::fileIn(string filename)
 {
 	ifstream inFile;
 	inFile.open(filename);
-	if (!inFile) { cout << "error"; return; }
+	if (!inFile) { 
+		return 1;
+	}
 	T key;
 	unsigned int count;
 	inFile >> count;
@@ -238,13 +241,14 @@ void BinarySearchTree<T>::fileIn(string filename)
 		add(key);
 	}
 	inFile.close();
+	return 0;
 }
 
 template<typename T>
 void BinarySearchTree<T>::fileOut(Node<T>* node, ostream &outstream, unsigned int level) const
 {
-	
-	if (!node) { return; }
+
+	if (!node) return;
 
 	level++;
 	fileOut(node->rightNode, outstream, level);
