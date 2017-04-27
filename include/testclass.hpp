@@ -25,7 +25,8 @@ class BinarySearchTree {
 	Node<T>*	 findNode(const T& key) const;
 	void		 deleteTree(Node<T>* node);
 	void		 inorderPrint(Node<T>* node, unsigned int level);
-
+	void         fileOut(Node<T>* node, ostream& fileOut, unsigned int level) const;
+	
 public:
 	BinarySearchTree();
 	~BinarySearchTree();
@@ -42,7 +43,6 @@ public:
 	void         paintTree();
 
 	int          fileIn(string filename);
-	void         fileOut(Node<T>* node, ostream& fileOut, unsigned int level) const;
 	void         Out(string filename) const;
 
 };
