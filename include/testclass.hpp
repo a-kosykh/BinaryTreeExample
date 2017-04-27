@@ -20,6 +20,8 @@ template <typename T>
 class BinarySearchTree {
 	Node<T>* root_;
 	void	 addNode(Node<T>* &node, const T &key);
+	Node<T>* removeNode(Node<T>* &node, const T &key);
+	Node<T>* findMin(Node<T>* node);
 	Node<T>* findNode(const T& key) const;
 	void	 deleteTree(Node<T>* node);
 	void     inorderPrint(Node<T>* node, unsigned int level);
@@ -35,7 +37,7 @@ public:
 	Node<T>*     root() const;
 
     void         add(const T& value);
-	void         rmv(const T& value);
+	void         remove(const T& value);
 	bool         isFound(const T& value) const;
 	void         paintTree();
 	
@@ -62,6 +64,45 @@ void BinarySearchTree<T>::addNode(Node<T>*& node, const T & key)
 }
 
 template<typename T>
+Node<T>* BinarySearchTree<T>::removeNode(Node<T>*& node, const T& key)
+{
+	if (node == NULL)
+		return node;
+	if (key < node->key)
+		node->leftNode = removeNode(node->leftNode, key);
+	else if (key > node->key)
+		node->rightNode = removeNode(node->rightNode, key);
+	else {
+		if ((node->leftNode == NULL) || node->rightNode == NULL) {
+			Node<T>* tmp = node->leftNode ? node->leftNode :
+				node->rightNode;
+			if (tmp == NULL) {
+				tmp = node;
+				node = NULL;
+			}
+			else *node = *tmp;
+			delete tmp;
+		}
+		else {
+			Node<T>* tmp = findMin(node->rightNode);
+			node->key = tmp->key;
+			node->rightNode = removeNode(node->rightNode, tmp->key);
+		}
+	}
+	if (node == NULL)
+		return node;
+	return node;
+}
+
+template<typename T>
+Node<T>* BinarySearchTree<T>::findMin(Node<T>* node)
+{
+	if (node->leftNode != NULL)
+		findMin(node->leftNode);
+	else return node;
+}
+
+template<typename T>
 Node<T>* BinarySearchTree<T>::findNode(const T & key) const
 {
 	Node<T>* currentNode = root_;
@@ -84,8 +125,6 @@ void BinarySearchTree<T>::deleteTree(Node<T>* node)
 	deleteTree(node->leftNode);
 	deleteTree(node->rightNode);
 }
-
-
 
 template<typename T>
 void BinarySearchTree<T>::inorderPrint(Node<T>* node, unsigned int level)
@@ -156,109 +195,14 @@ void BinarySearchTree<T>::add(const T & key)
 }
 
 template<typename T>
-void BinarySearchTree<T>::rmv(const T& key)
+void BinarySearchTree<T>::remove(const T & key)
 {
-	bool found = false;
-	Node<T>* currentNode;
-	Node<T>* parentNode;
-	currentNode = root_;
-	parentNode = (Node<T>*)NULL;
-	
-	while (currentNode != NULL)
-	{
-		if (currentNode->key == key) {
-			found = true;
-			break;
-		}
-		else {
-			parentNode = currentNode;
-			if (key > currentNode->key) currentNode = currentNode->rightNode;
-			else currentNode = currentNode->leftNode;
-		}
-	}
-	
-	if (!found) {
-		cout << "Key to delete has not been found" << endl;
+	if (isFound(key)) {
+		removeNode(root_, key);
 		return;
 	}
-	
-	if ((currentNode->leftNode == NULL && currentNode->rightNode != NULL) || (currentNode->leftNode != NULL
-		&& currentNode->rightNode == NULL)) {
-		if (currentNode->leftNode == NULL && currentNode->rightNode != NULL) {
-			if (parentNode->leftNode == currentNode) {
-				parentNode->leftNode = currentNode->rightNode;
-				delete currentNode;
-			}
-			else {
-				parentNode->rightNode = currentNode->rightNode;
-				delete currentNode;
-			}
-		}
-		else {
-			if (parentNode->leftNode == currentNode) {
-				parentNode->leftNode = currentNode->leftNode;
-				delete currentNode;
-			}
-			else {
-				parentNode->rightNode = currentNode->leftNode;
-				delete currentNode;
-			}
-		}
-		return;
-	}
-
-	if (currentNode->leftNode == NULL && currentNode->rightNode == NULL)
-	{
-		if (parentNode == NULL)
-		{
-			delete currentNode;
-
-		}
-		else
-			if (parentNode->leftNode == currentNode) parentNode->leftNode = NULL;
-			else parentNode->rightNode = NULL;
-			delete currentNode;
-			return;
-	}
-
-	if (currentNode->leftNode != NULL && currentNode->rightNode != NULL)
-	{
-		Node<T>* chkr;
-		chkr = currentNode->rightNode;
-		if ((chkr->leftNode == NULL) && (chkr->rightNode == NULL))
-		{
-			currentNode = chkr;
-			delete chkr;
-			currentNode->rightNode = NULL;
-		}
-		else 
-		{
-		
-			if ((currentNode->rightNode)->leftNode != NULL)
-			{
-				Node<T>* lcurr;
-				Node<T>* lcurrp;
-				lcurrp = currentNode->rightNode;
-				lcurr = (currentNode->rightNode)->leftNode;
-				while (lcurr->leftNode != NULL)
-				{
-					lcurrp = lcurr;
-					lcurr = lcurr->leftNode;
-				}
-				currentNode->key = lcurr->key;
-				delete lcurr;
-				lcurrp->leftNode = NULL;
-			}
-			else
-			{
-				Node<T>* tmp;
-				tmp = currentNode->rightNode;
-				currentNode->key = tmp->key;
-				currentNode->rightNode = tmp->rightNode;
-				delete tmp;
-			}
-
-		}
+	else {
+		cout << key << " is not in the tree";
 		return;
 	}
 }

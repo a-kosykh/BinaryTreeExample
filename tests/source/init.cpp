@@ -22,21 +22,6 @@ SCENARIO("findElement")
 	REQUIRE(bst.isFound(13) == 1);
 }
 
-SCENARIO("removeElement")
-{
-	BinarySearchTree<int> bst;
-	bst.add(6);
-	bst.add(3);
-	bst.add(8);
-	bst.add(15);
-	bst.add(14);
-	bst.add(20);
-	
-	bst.rmv(8);
-	
-	REQUIRE(bst.isFound(8) == 0);
-}
-
 SCENARIO("infile")
 {
 	BinarySearchTree<int> bst;
